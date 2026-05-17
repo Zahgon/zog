@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.22.3](https://github.com/Oudwins/zog/compare/v0.22.2...v0.22.3) (2026-05-17)
+
+
+### Features
+
+* *.md files in docs ([57b08ec](https://github.com/Oudwins/zog/commit/57b08eccc00a4a44911810ac39e08050900c0a07))
+* zog best practices skill ([7b01b63](https://github.com/Oudwins/zog/commit/7b01b6381dca4c9811047537fc1c6562de164dc6))
+
+
+### Bug Fixes
+
+* test for 1.23.x ([#227](https://github.com/Oudwins/zog/issues/227)) ([c32cea0](https://github.com/Oudwins/zog/commit/c32cea0894a1885900f093c1911f86e40018e31e))
+
 ## [0.22.2](https://github.com/Oudwins/zog/compare/v0.22.1...v0.22.2) (2026-04-25)
 
 
