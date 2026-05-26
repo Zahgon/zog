@@ -80,12 +80,12 @@ var Map zconst.LangMap = map[zconst.ZogType]map[zconst.ZogIssueCode]string{
 		zconst.IssueCodeFallback:                      "スライスが無効です",
 	},
 	zconst.TypeMap: {
-		zconst.IssueCodeRequired:     "必須です",
-		zconst.IssueCodeNotNil:       "空ではいけません",
-		zconst.IssueCodeMin:          "マップには少なくとも {{min}} エントリが必要です",
-		zconst.IssueCodeMax:          "マップには最大 {{max}} エントリが必要です",
-		zconst.IssueCodeLen:          "マップにはちょうど {{len}} エントリが必要です",
-		zconst.IssueCodeFallback:     "マップが無効です",
+		zconst.IssueCodeRequired: "必須です",
+		zconst.IssueCodeNotNil:   "空ではいけません",
+		zconst.IssueCodeMin:      "マップには少なくとも {{min}} エントリが必要です",
+		zconst.IssueCodeMax:      "マップには最大 {{max}} エントリが必要です",
+		zconst.IssueCodeLen:      "マップにはちょうど {{len}} エントリが必要です",
+		zconst.IssueCodeFallback: "マップが無効です",
 	},
 	zconst.TypeStruct: {
 		zconst.IssueCodeRequired: "必須です",

@@ -47,108 +47,33 @@ type BoolTFunc[T any] p.BoolTFunc[T]
 
 // Creates a reusable testFunc you can add to schemas by doing schema.Test(z.TestFunc()). Has the same API as schema.TestFunc() so it is recommended you use that one for non reusable tests.
 func TestFunc[T any](IssueCode zconst.ZogIssueCode, fn BoolTFunc[T], options ...p.TestOption) Test[T] {
-	return Test[T](*p.NewTestFunc(IssueCode, p.BoolTFunc[T](fn), options...))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ! PRIMITIVE PROCESSING -> Not userspace code
 
 func primitiveParsing[T p.ZogPrimitive](ctx *p.SchemaCtx, processors []p.ZProcessor[*T], defaultFunc func() T, required *p.Test[*T], catchFunc func() T, coercer CoercerFunc, isZeroFunc p.IsZeroValueFunc) {
-	ctx.CanCatch = catchFunc != nil
-
-	destPtr, ok := ctx.ValPtr.(*T)
-	if !ok {
-		p.Panicf(p.PanicTypeCast, ctx.String(), ctx.DType, ctx.ValPtr)
-	}
-
-	// 2. cast data to string & handle default/required
-	isZeroVal := isZeroFunc(ctx.Data, ctx)
-	if isZeroVal {
-		if defaultFunc != nil {
-			*destPtr = defaultFunc()
-		} else if required == nil {
-			// This handles optional case
-			return
-		} else {
-			// is required & zero value
-			// required
-			if ctx.CanCatch {
-				*destPtr = catchFunc()
-				return
-			} else {
-				ctx.AddIssue(ctx.IssueFromTest(required, *destPtr))
-				return
-			}
-		}
-	} else {
-		v, err := coercer(ctx.Data)
-		if err != nil {
-			if ctx.CanCatch {
-				*destPtr = catchFunc()
-				return
-			}
-			ctx.AddIssue(ctx.IssueFromCoerce(err))
-			return
-		}
-		x, ok := v.(T)
-		if !ok {
-			p.Panicf(p.PanicTypeCastCoercer, ctx.String(), ctx.DType, v)
-		}
-		*destPtr = x
-	}
-
-	for _, processor := range processors {
-		ctx.Processor = processor
-		processor.ZProcess(destPtr, ctx)
-		if ctx.Exit {
-			if ctx.CanCatch {
-				*destPtr = catchFunc()
-				return
-			}
-			return
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// 2. cast data to string & handle default/required
+
+// This handles optional case
+
+// is required & zero value
+// required
 
 func primitiveValidation[T p.ZogPrimitive](ctx *p.SchemaCtx, processors []p.ZProcessor[*T], defaultFunc func() T, required *p.Test[*T], catchFunc func() T) {
-	ctx.CanCatch = catchFunc != nil
-
-	valPtr, ok := ctx.ValPtr.(*T)
-	if !ok {
-		p.Panicf(p.PanicTypeCast, ctx.String(), ctx.DType, ctx.ValPtr)
-	}
-
-	// 2. cast data to string & handle default/required
-	// Warning. This uses generic IsZeroValue because for Validate we treat zero values as invalid for required fields. This is different from Parse.
-	isZeroVal := p.IsZeroValue(*valPtr)
-
-	if isZeroVal {
-		if defaultFunc != nil {
-			*valPtr = defaultFunc()
-		} else if required == nil {
-			// This handles optional case
-			return
-		} else {
-			// is required & zero value
-			// required
-			if ctx.CanCatch {
-				*valPtr = catchFunc()
-				return
-			} else {
-				ctx.AddIssue(ctx.IssueFromTest(required, *valPtr))
-				return
-			}
-		}
-	}
-
-	for _, processor := range processors {
-		ctx.Processor = processor
-		processor.ZProcess(valPtr, ctx)
-		if ctx.Exit {
-			if ctx.CanCatch {
-				*valPtr = catchFunc()
-				return
-			}
-			return
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// 2. cast data to string & handle default/required
+// Warning. This uses generic IsZeroValue because for Validate we treat zero values as invalid for required fields. This is different from Parse.
+
+// This handles optional case
+
+// is required & zero value
+// required

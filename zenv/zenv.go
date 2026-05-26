@@ -1,9 +1,7 @@
 package zenv
 
 import (
-	"os"
 	"reflect"
-	"strings"
 
 	p "github.com/Oudwins/zog/pkgs/internals"
 )
@@ -17,27 +15,18 @@ var (
 type envDataProvider struct {
 }
 
-func (e *envDataProvider) Get(key string) any {
-	val := strings.TrimSpace(os.Getenv(key))
-	if val == "" {
-		return nil
-	}
-	return val
-}
+func (e *envDataProvider) Get(key string) any { _ = "STUB: not implemented"; return *new(any) }
 
 func (e *envDataProvider) GetByField(field reflect.StructField, fallback string) (any, string) {
-	key := p.GetKeyFromField(field, fallback, &envTag)
-	return e.Get(key), key
+	_ = "STUB: not implemented"
+	return *new(any), ""
 }
 
 func (e *envDataProvider) GetNestedProvider(key string) p.DataProvider {
-	return e
+	_ = "STUB: not implemented"
+	return *new(p.DataProvider)
 }
 
-func NewDataProvider() *envDataProvider {
-	return &envDataProvider{}
-}
+func NewDataProvider() *envDataProvider { _ = "STUB: not implemented"; return nil }
 
-func (e *envDataProvider) GetUnderlying() any {
-	return nil
-}
+func (e *envDataProvider) GetUnderlying() any { _ = "STUB: not implemented"; return *new(any) }

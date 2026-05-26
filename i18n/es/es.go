@@ -79,12 +79,12 @@ var Map zconst.LangMap = map[zconst.ZogType]map[zconst.ZogIssueCode]string{
 		zconst.IssueCodeFallback:                      "Lista no es válida",
 	},
 	zconst.TypeMap: {
-		zconst.IssueCodeRequired:     "Es obligatorio",
-		zconst.IssueCodeNotNil:       "No debe estar vacio",
-		zconst.IssueCodeMin:          "Mapa debe contener al menos {{min}} entradas",
-		zconst.IssueCodeMax:          "Mapa debe contener como máximo {{max}} entradas",
-		zconst.IssueCodeLen:          "Mapa debe contener exactamente {{len}} entradas",
-		zconst.IssueCodeFallback:     "Mapa no es válido",
+		zconst.IssueCodeRequired: "Es obligatorio",
+		zconst.IssueCodeNotNil:   "No debe estar vacio",
+		zconst.IssueCodeMin:      "Mapa debe contener al menos {{min}} entradas",
+		zconst.IssueCodeMax:      "Mapa debe contener como máximo {{max}} entradas",
+		zconst.IssueCodeLen:      "Mapa debe contener exactamente {{len}} entradas",
+		zconst.IssueCodeFallback: "Mapa no es válido",
 	},
 	zconst.TypeStruct: {
 		zconst.IssueCodeRequired: "Es obligatorio",

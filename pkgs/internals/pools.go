@@ -43,51 +43,10 @@ var StringBuilderPool = sync.Pool{
 	},
 }
 
-func NewStringBuilder() *strings.Builder {
-	sb := StringBuilderPool.Get().(*strings.Builder)
-	sb.Reset()
-	return sb
-}
+func NewStringBuilder() *strings.Builder { _ = "STUB: not implemented"; return nil }
 
-func FreeStringBuilder(sb *strings.Builder) {
-	StringBuilderPool.Put(sb)
-}
+func FreeStringBuilder(sb *strings.Builder) { _ = "STUB: not implemented"; return }
 
-func ClearPools() {
-	ExecCtxPool = sync.Pool{
-		New: func() any {
-			return &ExecCtx{}
-		},
-	}
-	SchemaCtxPool = sync.Pool{
-		New: func() any {
-			return &SchemaCtx{}
-		},
-	}
-	InternalIssueListPool = sync.Pool{
-		New: func() any {
-			return &ErrsList{}
-		},
-	}
-	ZogIssuePool = sync.Pool{
-		New: func() any {
-			return &ZogIssue{}
-		},
-	}
-	PathBuilderPool = sync.Pool{
-		New: func() any {
-			pb := make(PathBuilder, 0, 5)
-			return &pb
-		},
-	}
-	StringBuilderPool = sync.Pool{
-		New: func() any {
-			sb := strings.Builder{}
-			return &sb
-		},
-	}
-}
+func ClearPools() { _ = "STUB: not implemented"; return }
 
-func Clear() {
-	ClearPools()
-}
+func Clear() { _ = "STUB: not implemented"; return }

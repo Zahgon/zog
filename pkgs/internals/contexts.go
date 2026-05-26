@@ -1,8 +1,6 @@
 package internals
 
 import (
-	"fmt"
-
 	zconst "github.com/Oudwins/zog/zconst"
 )
 
@@ -43,15 +41,7 @@ type Ctx interface {
 	HasErrored() bool
 }
 
-func NewExecCtx(errs ZogIssues, fmter IssueFmtFunc) *ExecCtx {
-	c := ExecCtxPool.Get().(*ExecCtx)
-	c.Fmter = fmter
-	c.Errors = errs
-	if c.m != nil {
-		clear(c.m)
-	}
-	return c
-}
+func NewExecCtx(errs ZogIssues, fmter IssueFmtFunc) *ExecCtx { _ = "STUB: not implemented"; return nil }
 
 type ExecCtx struct {
 	Fmter  IssueFmtFunc
@@ -59,80 +49,45 @@ type ExecCtx struct {
 	m      map[string]any
 }
 
-func (c *ExecCtx) HasErrored() bool {
-	return !c.Errors.IsEmpty()
-}
+func (c *ExecCtx) HasErrored() bool { _ = "STUB: not implemented"; return false }
 
-func (c *ExecCtx) SetIssueFormatter(fmter IssueFmtFunc) {
-	c.Fmter = fmter
-}
+func (c *ExecCtx) SetIssueFormatter(fmter IssueFmtFunc) { _ = "STUB: not implemented"; return }
 
-func (c *ExecCtx) Set(key string, val any) {
-	if c.m == nil {
-		c.m = make(map[string]any)
-	}
-	c.m[key] = val
-}
+func (c *ExecCtx) Set(key string, val any) { _ = "STUB: not implemented"; return }
 
 func (c *ExecCtx) Get(key string) any {
-	return c.m[key]
+	_ = "STUB: not implemented"
+
+	// Adds a ZogIssue to the execution context.
+	return *new(any)
 }
 
-// Adds a ZogIssue to the execution context.
-func (c *ExecCtx) AddIssue(e *ZogIssue) {
-	if e.Message == "" {
-		c.Fmter(e, c)
-	}
-	c.Errors.Add(e)
-}
+func (c *ExecCtx) AddIssue(e *ZogIssue) { _ = "STUB: not implemented"; return }
 
-func (c *ExecCtx) Issue() *ZogIssue {
-	return NewZogIssue()
-}
+func (c *ExecCtx) Issue() *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // Deprecated: Use Ctx.AddIssue() instead
 // This is old interface. It will be removed soon
 func (c *ExecCtx) NewError(path *PathBuilder, e *ZogIssue) {
-	c.Errors.Add(e)
+	_ = "STUB: not implemented"
+
+	// Internal. Used to format errors
+	return
 }
 
-// Internal. Used to format errors
-func (c *ExecCtx) FmtErr(e *ZogIssue) {
-	if e.Message != "" {
-		return
-	}
-	c.Fmter(e, c)
-}
+func (c *ExecCtx) FmtErr(e *ZogIssue) { _ = "STUB: not implemented"; return }
 
 func (c *ExecCtx) NewSchemaCtx(val any, destPtr any, path *PathBuilder, dtype zconst.ZogType) *SchemaCtx {
-	c2 := SchemaCtxPool.Get().(*SchemaCtx)
-	c2.ExecCtx = c
-	c2.Data = val
-	c2.ValPtr = destPtr
-	c2.Path = path
-	c2.DType = dtype
-	c2.CanCatch = false
-	c2.HasCaught = false
-	c2.Exit = false
-	return c2
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *ExecCtx) NewValidateSchemaCtx(valPtr any, path *PathBuilder, dtype zconst.ZogType) *SchemaCtx {
-	c2 := SchemaCtxPool.Get().(*SchemaCtx)
-	c2.ExecCtx = c
-	c2.Data = nil
-	c2.ValPtr = valPtr
-	c2.Path = path
-	c2.DType = dtype
-	c2.CanCatch = false
-	c2.HasCaught = false
-	c2.Exit = false
-	return c2
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (c *ExecCtx) Free() {
-	ExecCtxPool.Put(c)
-}
+func (c *ExecCtx) Free() { _ = "STUB: not implemented"; return }
 
 type SchemaCtx struct {
 	*ExecCtx
@@ -146,16 +101,10 @@ type SchemaCtx struct {
 	Processor any
 }
 
-func (c *SchemaCtx) AddIssue(e *ZogIssue) {
-	if c.CanCatch {
-		c.Exit = true
-		FreeIssue(e)
-		return
-	}
-	c.ExecCtx.AddIssue(e)
-}
+func (c *SchemaCtx) AddIssue(e *ZogIssue) { _ = "STUB: not implemented"; return }
 
 func (c *SchemaCtx) Issue() *ZogIssue {
+	_ = "STUB: not implemented"
 	// e := ZogIssuePool.Get().(*ZogIssue)
 	// e.Code = ""
 	// e.Path = c.Path.String()
@@ -164,58 +113,29 @@ func (c *SchemaCtx) Issue() *ZogIssue {
 	// e.Params = nil
 	// e.Dtype = c.DType
 	// e.Value = c.Data
-	return NewZogIssue().SetPath(c.Path.ToListClone()).SetDType(c.DType).SetValue(c.Data)
+	return nil
 }
 
 // Please don't depend on this method it may change
 func (c *SchemaCtx) IssueFromTest(test TestInterface, val any) *ZogIssue {
-	e := ZogIssuePool.Get().(*ZogIssue)
-	e.Code = test.GetIssueCode()
-	e.Path = c.Path.ToListClone()
-	e.Err = nil
-	e.Message = ""
-	e.Dtype = c.DType
-	e.Value = val
-	e.Params = test.GetParams()
-	if test.GetIssueFmtFunc() != nil {
-		test.GetIssueFmtFunc()(e, c)
-	}
-	if test.GetIssuePath() != nil {
-		e.Path = test.GetIssuePath()
-	}
-	return e
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Please don't depend on this method it may change
-func (c *SchemaCtx) IssueFromCoerce(err error) *ZogIssue {
-	e := ZogIssuePool.Get().(*ZogIssue)
-	e.Code = zconst.IssueCodeCoerce
-	e.Path = c.Path.ToListClone()
-	e.Message = ""
-	e.Dtype = c.DType
-	e.Value = c.Data
-	e.Err = err
-	return e
-}
+func (c *SchemaCtx) IssueFromCoerce(err error) *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // Please don't depend on this method it may change
 // Wraps an error in a ZogIssue if it is not already a ZogIssue
 func (c *SchemaCtx) IssueFromUnknownError(err error) *ZogIssue {
-	zerr, ok := err.(*ZogIssue)
-	if !ok {
-		return c.Issue().SetError(err)
-	}
-	return zerr
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Frees the context to be reused
-func (c *SchemaCtx) Free() {
-	SchemaCtxPool.Put(c)
-}
+func (c *SchemaCtx) Free() { _ = "STUB: not implemented"; return }
 
-func (c *SchemaCtx) String() string {
-	return fmt.Sprintf("z.Ctx{Data: %v, ValPtr: %v, Path: %v, DType: %v, CanCatch: %v, Exit: %v, HasCaught: %v }", SafeString(c.Data), SafeString(c.ValPtr), c.Path, c.DType, c.CanCatch, c.Exit, c.HasCaught)
-}
+func (c *SchemaCtx) String() string { _ = "STUB: not implemented"; return "" }
 
 // func (c *TestCtx) Issue() *ZogIssue {
 // 	// TODO handle catch here

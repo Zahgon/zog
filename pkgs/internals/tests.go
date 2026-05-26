@@ -1,8 +1,6 @@
 package internals
 
 import (
-	"reflect"
-
 	zconst "github.com/Oudwins/zog/zconst"
 	"golang.org/x/exp/constraints"
 )
@@ -16,37 +14,13 @@ type TFunc[T any] func(val T, ctx Ctx)
 // TestOption is the option for a test
 type TestOption func(test TestInterface)
 
-func TestFuncFromBool[T any](fn BoolTFunc[T], test *Test[T]) {
-	test.Func = func(val T, ctx Ctx) {
-		if fn(val, ctx) {
-			return
-		}
+func TestFuncFromBool[T any](fn BoolTFunc[T], test *Test[T]) { _ = "STUB: not implemented"; return }
 
-		c := ctx.(*SchemaCtx)
-		ctx.AddIssue(c.IssueFromTest(c.Processor.(TestInterface), val))
-	}
-}
-
-func TestNotFuncFromBool[T any](fn BoolTFunc[T], test *Test[T]) {
-	test.Func = func(val T, ctx Ctx) {
-		if !fn(val, ctx) {
-			return
-		}
-
-		c := ctx.(*SchemaCtx)
-		ctx.AddIssue(c.IssueFromTest(c.Processor.(TestInterface), val))
-	}
-}
+func TestNotFuncFromBool[T any](fn BoolTFunc[T], test *Test[T]) { _ = "STUB: not implemented"; return }
 
 func NewTestFunc[T any](IssueCode zconst.ZogIssueCode, fn BoolTFunc[T], options ...TestOption) *Test[T] {
-	t := &Test[T]{
-		IssueCode: IssueCode,
-	}
-	for _, opt := range options {
-		opt(t)
-	}
-	TestFuncFromBool(fn, t)
-	return t
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type TestInterface interface {
@@ -74,174 +48,74 @@ type Test[T any] struct {
 	Func TFunc[T]
 }
 
-func (t *Test[T]) ZProcess(valPtr T, ctx Ctx) {
-	t.Func(valPtr, ctx)
-}
+func (t *Test[T]) ZProcess(valPtr T, ctx Ctx) { _ = "STUB: not implemented"; return }
 
 func (t *Test[T]) GetIssueCode() zconst.ZogIssueCode {
-	return t.IssueCode
+	_ = "STUB: not implemented"
+	return *new(zconst.ZogIssueCode)
 }
 
-func (t *Test[T]) GetIssuePath() []string {
-	return t.IssuePath
-}
+func (t *Test[T]) GetIssuePath() []string { _ = "STUB: not implemented"; return nil }
 
-func (t *Test[T]) GetParams() map[string]any {
-	return t.Params
-}
+func (t *Test[T]) GetParams() map[string]any { _ = "STUB: not implemented"; return nil }
 
 func (t *Test[T]) GetIssueFmtFunc() IssueFmtFunc {
-	return t.IssueFmtFunc
+	_ = "STUB: not implemented"
+	return *new(IssueFmtFunc)
 }
 
-func (t *Test[T]) SetIssueCode(code zconst.ZogIssueCode) {
-	t.IssueCode = code
-}
+func (t *Test[T]) SetIssueCode(code zconst.ZogIssueCode) { _ = "STUB: not implemented"; return }
 
-func (t *Test[T]) SetIssuePath(path []string) {
-	t.IssuePath = path
-}
+func (t *Test[T]) SetIssuePath(path []string) { _ = "STUB: not implemented"; return }
 
-func (t *Test[T]) SetParams(params map[string]any) {
-	t.Params = params
-}
+func (t *Test[T]) SetParams(params map[string]any) { _ = "STUB: not implemented"; return }
 
-func (t *Test[T]) SetIssueFmtFunc(fmter IssueFmtFunc) {
-	t.IssueFmtFunc = fmter
-}
+func (t *Test[T]) SetIssueFmtFunc(fmter IssueFmtFunc) { _ = "STUB: not implemented"; return }
 
 // returns a required test to be used for processor.Required() method
-func Required[T any]() Test[T] {
-	t := Test[T]{
-		IssueCode: zconst.IssueCodeRequired,
-		// this is not an accident. required is only a test because it makes it easier to handle error messages. But the function to check if the value is a zero value is out of the scope of this test.
-		Func: nil,
-	}
-	return t
-}
+func Required[T any]() Test[T] { _ = "STUB: not implemented"; return nil }
+
+// this is not an accident. required is only a test because it makes it easier to handle error messages. But the function to check if the value is a zero value is out of the scope of this test.
 
 type LengthCapable[K any] interface {
 	~[]any | ~[]K | ~string | map[any]any | ~chan any
 }
 
 func LenMin[T LengthCapable[any]](n int) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		return len(*val) >= n
-	}
-
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeMin,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeMin] = n
-	return t, fn
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func LenMax[T LengthCapable[any]](n int) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		return len(*val) <= n
-	}
-
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeMax,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeMax] = n
-	return t, fn
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func Len[T LengthCapable[any]](n int) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		return len(*val) == n
-	}
-
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeLen,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeLen] = n
-	return t, fn
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func In[T any](values []T) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		for _, value := range values {
-			if reflect.DeepEqual(*val, value) {
-				return true
-			}
-		}
-		return false
-	}
+func In[T any](values []T) (Test[*T], BoolTFunc[*T]) { _ = "STUB: not implemented"; return nil, nil }
 
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeOneOf,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeOneOf] = values
-	return t, fn
-}
-
-func EQ[T comparable](n T) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		return *val == n
-	}
-
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeEQ,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeEQ] = n
-	return t, fn
-}
+func EQ[T comparable](n T) (Test[*T], BoolTFunc[*T]) { _ = "STUB: not implemented"; return nil, nil }
 
 func LTE[T constraints.Ordered](n T) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		return *val <= n
-	}
-
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeLTE,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeLTE] = n
-	return t, fn
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func GTE[T constraints.Ordered](n T) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		return *val >= n
-	}
-
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeGTE,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeGTE] = n
-	return t, fn
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func LT[T constraints.Ordered](n T) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		return *val < n
-	}
-
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeLT,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeLT] = n
-	return t, fn
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func GT[T constraints.Ordered](n T) (Test[*T], BoolTFunc[*T]) {
-	fn := func(val *T, ctx Ctx) bool {
-		return *val > n
-	}
-
-	t := Test[*T]{
-		IssueCode: zconst.IssueCodeGT,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeGT] = n
-	return t, fn
+	_ = "STUB: not implemented"
+	return nil, nil
 }

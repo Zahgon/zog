@@ -1,7 +1,6 @@
 package zog
 
 import (
-	"github.com/Oudwins/zog/conf"
 	p "github.com/Oudwins/zog/pkgs/internals"
 	"github.com/Oudwins/zog/zconst"
 )
@@ -18,120 +17,45 @@ type BoxedSchema[B any, T any] struct {
 }
 
 func Boxed[B any, T any](schema ZogSchema, unboxFunc UnboxFunc[B, T], boxFunc CreateBoxFunc[T, B]) *BoxedSchema[B, T] {
-	return &BoxedSchema[B, T]{schema: schema, unbox: unboxFunc, box: boxFunc}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *BoxedSchema[B, T]) Parse(data any, dest any, options ...ExecOption) ZogIssueList {
-	errs := p.NewErrsList()
-	defer errs.Free()
-	ctx := p.NewExecCtx(errs, conf.IssueFormatter)
-	defer ctx.Free()
-	for _, opt := range options {
-		opt(ctx)
-	}
-	path := p.NewPathBuilder()
-	defer path.Free()
-	sctx := ctx.NewSchemaCtx(data, dest, path, s.getType())
-	defer sctx.Free()
-	s.process(sctx)
-	return errs.List
+	_ = "STUB: not implemented"
+	return *new(ZogIssueList)
 }
 
 func (s *BoxedSchema[B, T]) Validate(dest *B, options ...ExecOption) ZogIssueList {
-	errs := p.NewErrsList()
-	defer errs.Free()
-	ctx := p.NewExecCtx(errs, conf.IssueFormatter)
-	defer ctx.Free()
-	for _, opt := range options {
-		opt(ctx)
-	}
-	path := p.NewPathBuilder()
-	defer path.Free()
-	sctx := ctx.NewSchemaCtx(*dest, dest, path, s.getType())
-	defer sctx.Free()
-	s.validate(sctx)
-	return errs.List
+	_ = "STUB: not implemented"
+	return *new(ZogIssueList)
 }
 
-func (s *BoxedSchema[B, T]) validate(ctx *p.SchemaCtx) {
-	boxPtr, ok := ctx.ValPtr.(*B)
-	if !ok {
-		p.Panicf("BoxedSchema[%T, %T]: Expected valPtr type to correspond with type defined in schema. But it does not. Expected type: %T, got: %T", new(B), new(T), new(*B), ctx.ValPtr)
-	}
-	unboxed, err := s.unbox(*boxPtr, ctx)
-	if err != nil {
-		ctx.AddIssue(ctx.IssueFromUnknownError(err))
-		return
-	}
-	ctx.Data = &unboxed
-	ctx.ValPtr = &unboxed
-	s.schema.validate(ctx)
+func (s *BoxedSchema[B, T]) validate(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
 
-	// Re-box and propagate back
-	if s.box != nil {
-		newBox, err := s.box(unboxed, ctx)
-		if err != nil {
-			ctx.AddIssue(ctx.IssueFromUnknownError(err))
-			return
-		}
-		*boxPtr = newBox
-	}
-}
+// Re-box and propagate back
 
-func (s *BoxedSchema[B, T]) process(ctx *p.SchemaCtx) {
-	boxPtr, ok := ctx.ValPtr.(*B)
-	if !ok {
-		p.Panicf("BoxedSchema[%T, %T]: Expected valPtr type to correspond with type defined in schema. But it does not. Expected type: %T, got: %T", new(B), new(T), new(*B), ctx.ValPtr)
-	}
+func (s *BoxedSchema[B, T]) process(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
 
-	// 1. Handle ctx.Data - could be B, *B, or raw data
-	var innerData any
-	switch d := ctx.Data.(type) {
-	case B:
-		// Unbox B to get T
-		unboxed, err := s.unbox(d, ctx)
-		if err != nil {
-			ctx.AddIssue(ctx.IssueFromUnknownError(err))
-			return
-		}
-		innerData = unboxed
-	case *B:
-		// Dereference and unbox
-		unboxed, err := s.unbox(*d, ctx)
-		if err != nil {
-			ctx.AddIssue(ctx.IssueFromUnknownError(err))
-			return
-		}
-		innerData = unboxed
-	default:
-		// Raw data - pass directly to inner schema
-		innerData = d
-	}
+// 1. Handle ctx.Data - could be B, *B, or raw data
 
-	// 2. Create temporary T for inner schema and pass data
-	var inner T
-	ctx.Data = innerData
-	ctx.ValPtr = &inner
+// Unbox B to get T
 
-	// 3. Process through inner schema (keeps pointer to inner)
-	s.schema.process(ctx)
+// Dereference and unbox
 
-	// 4. Re-box and set to original destination
-	if s.box != nil {
-		newBox, err := s.box(inner, ctx)
-		if err != nil {
-			ctx.AddIssue(ctx.IssueFromUnknownError(err))
-			return
-		}
-		*boxPtr = newBox
-	}
-	// TODO maybe some kind of flag that you executed process with boxFunc is nil
-}
+// Raw data - pass directly to inner schema
+
+// 2. Create temporary T for inner schema and pass data
+
+// 3. Process through inner schema (keeps pointer to inner)
+
+// 4. Re-box and set to original destination
+
+// TODO maybe some kind of flag that you executed process with boxFunc is nil
 
 func (s *BoxedSchema[B, T]) getType() zconst.ZogType {
-	return s.schema.getType()
+	_ = "STUB: not implemented"
+	return *new(zconst.ZogType)
 }
 
-func (s *BoxedSchema[B, T]) setCoercer(c CoercerFunc) {
-	s.schema.setCoercer(c)
-}
+func (s *BoxedSchema[B, T]) setCoercer(c CoercerFunc) { _ = "STUB: not implemented"; return }

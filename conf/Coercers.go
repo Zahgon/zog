@@ -9,24 +9,8 @@ import (
 )
 
 func TimeCoercerFactory(format func(data string) (time.Time, error)) CoercerFunc {
-	return func(data any) (any, error) {
-		switch v := data.(type) {
-		case time.Time:
-			return v, nil
-		case string:
-			tim, err := format(v)
-			if err != nil {
-				return nil, fmt.Errorf("failed to parse time: %v", err)
-			}
-			return tim, nil
-		case int:
-			return time.Unix(int64(v), 0), nil
-		case int64:
-			return time.Unix(v, 0), nil
-		default:
-			return nil, fmt.Errorf("input data is an unsupported type to coerce to time.Time: %v", data)
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(CoercerFunc)
 }
 
 // takes in an original value and attempts to coerce it into another type. Returns an error if the coercion fails.

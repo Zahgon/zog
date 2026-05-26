@@ -1,7 +1,5 @@
 package internals
 
-import "slices"
-
 // type PathBuilder string
 
 // func (p PathBuilder) Push(path string) PathBuilder {
@@ -18,49 +16,18 @@ import "slices"
 // 	return string(p)
 // }
 
-func NewPathBuilder() *PathBuilder {
-	pb := PathBuilderPool.Get().(*PathBuilder)
-	*pb = (*pb)[:0]
-	return pb
-}
+func NewPathBuilder() *PathBuilder { _ = "STUB: not implemented"; return nil }
 
 type PathBuilder []string
 
-func (p *PathBuilder) Push(path *string) *PathBuilder {
-	*p = append(*p, *path)
-	return p
-}
+func (p *PathBuilder) Push(path *string) *PathBuilder { _ = "STUB: not implemented"; return nil }
 
-func (p *PathBuilder) Pop() {
-	if len(*p) == 0 {
-		return
-	}
-	*p = (*p)[:len(*p)-1]
-}
+func (p *PathBuilder) Pop() { _ = "STUB: not implemented"; return }
 
-func (p *PathBuilder) ToListClone() []string {
-	if len(*p) == 0 {
-		return nil
-	}
-	return slices.Clone(*p)
-}
+func (p *PathBuilder) ToListClone() []string { _ = "STUB: not implemented"; return nil }
 
-func (p *PathBuilder) String() string {
-	return FlattenPath(*p)
-}
+func (p *PathBuilder) String() string { _ = "STUB: not implemented"; return "" }
 
-func FlattenPath(s []string) string {
-	sb := NewStringBuilder()
-	defer FreeStringBuilder(sb)
-	for i, v := range s {
-		if i > 0 && s[i-1] != "" && v[0] != '[' {
-			sb.WriteString(".")
-		}
-		sb.WriteString(v)
-	}
-	return sb.String()
-}
+func FlattenPath(s []string) string { _ = "STUB: not implemented"; return "" }
 
-func (p *PathBuilder) Free() {
-	PathBuilderPool.Put(p)
-}
+func (p *PathBuilder) Free() { _ = "STUB: not implemented"; return }

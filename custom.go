@@ -1,9 +1,6 @@
 package zog
 
 import (
-	"fmt"
-
-	"github.com/Oudwins/zog/conf"
 	p "github.com/Oudwins/zog/pkgs/internals"
 	zss "github.com/Oudwins/zog/pkgs/zss/core"
 	"github.com/Oudwins/zog/zconst"
@@ -14,85 +11,41 @@ type Custom[T any] struct {
 }
 
 func CustomFunc[T any](fn func(ptr *T, ctx Ctx) bool, opts ...TestOption) *Custom[T] {
-	test := &p.Test[*T]{}
-	p.TestFuncFromBool(func(val *T, ctx Ctx) bool {
-		return fn(val, ctx)
-	}, test)
-	for _, opt := range opts {
-		opt(test)
-	}
-	return &Custom[T]{test: *test}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *Custom[T]) Parse(data any, destPtr *T, options ...ExecOption) ZogIssueList {
-	errs := p.NewErrsList()
-	defer errs.Free()
-	ctx := p.NewExecCtx(errs, conf.IssueFormatter)
-	defer ctx.Free()
-	for _, opt := range options {
-		opt(ctx)
-	}
-	path := p.NewPathBuilder()
-	defer path.Free()
-	sctx := ctx.NewSchemaCtx(data, destPtr, path, c.getType())
-	defer sctx.Free()
-	c.process(sctx)
-	return errs.List
+	_ = "STUB: not implemented"
+	return *new(ZogIssueList)
 }
 
-func (c *Custom[T]) process(ctx *p.SchemaCtx) {
-	ctx.Processor = &c.test
+func (c *Custom[T]) process(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
 
-	// set the value
-	d, ok := ctx.Data.(T)
-	if !ok {
-		ctx.AddIssue(ctx.IssueFromCoerce(fmt.Errorf("expected %T, got %T", new(T), ctx.Data)))
-		return
-	}
-	ptr, ok := ctx.ValPtr.(*T)
-	if !ok {
-		p.Panicf(p.PanicTypeCast, ctx.String(), ctx.DType, ctx.ValPtr)
-	}
-	*ptr = d
+// set the value
 
-	// run the test
-	c.test.Func(ptr, ctx)
-}
+// run the test
 
 func (c *Custom[T]) Validate(dataPtr *T, options ...ExecOption) ZogIssueList {
-	errs := p.NewErrsList()
-	defer errs.Free()
-	ctx := p.NewExecCtx(errs, conf.IssueFormatter)
-	defer ctx.Free()
-	for _, opt := range options {
-		opt(ctx)
-	}
-	path := p.NewPathBuilder()
-	defer path.Free()
-	sctx := ctx.NewSchemaCtx(dataPtr, dataPtr, path, c.getType())
-	defer sctx.Free()
-	c.validate(sctx)
-	return errs.List
+	_ = "STUB: not implemented"
+	return *new(ZogIssueList)
 }
 
-func (c *Custom[T]) validate(ctx *p.SchemaCtx) {
-	ctx.Processor = &c.test
-	ptr, ok := ctx.ValPtr.(*T)
-	if !ok {
-		p.Panicf(p.PanicTypeCast, ctx.String(), ctx.DType, ctx.ValPtr)
-	}
-	c.test.Func(ptr, ctx)
-}
+func (c *Custom[T]) validate(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
 
 func (c *Custom[T]) setCoercer(coercer CoercerFunc) {
+	_ = "STUB: not implemented"
 	// no op
+	return
 }
 
 func (c *Custom[T]) getType() zconst.ZogType {
-	return "custom"
+	_ = "STUB: not implemented"
+
+	// Experimental API. Expect breaking changes and no documentation unfortunately for now
+	return *new(zconst.ZogType)
 }
 
-// Experimental API. Expect breaking changes and no documentation unfortunately for now
 type EXPERIMENTAL_PUBLIC_ZOG_SCHEMA interface {
 	Process(ctx *p.SchemaCtx)
 	Validate(ctx *p.SchemaCtx)
@@ -103,7 +56,8 @@ type EXPERIMENTAL_PUBLIC_ZOG_SCHEMA interface {
 
 // Experimental API
 func Use(schema EXPERIMENTAL_PUBLIC_ZOG_SCHEMA) *CustomSchema {
-	return &CustomSchema{schema: schema}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Experimental API
@@ -113,22 +67,18 @@ type CustomSchema struct {
 
 var _ ZogSchema = &CustomSchema{}
 
-func (c *CustomSchema) process(ctx *p.SchemaCtx) {
-	c.schema.Process(ctx)
-}
+func (c *CustomSchema) process(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
 
-func (c *CustomSchema) validate(ctx *p.SchemaCtx) {
-	c.schema.Validate(ctx)
-}
+func (c *CustomSchema) validate(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
 
 func (c *CustomSchema) getType() zconst.ZogType {
-	return c.schema.GetType()
+	_ = "STUB: not implemented"
+	return *new(zconst.ZogType)
 }
 
-func (c *CustomSchema) setCoercer(coercer CoercerFunc) {
-	c.schema.SetCoercer(coercer)
-}
+func (c *CustomSchema) setCoercer(coercer CoercerFunc) { _ = "STUB: not implemented"; return }
 
 func (c *CustomSchema) toZSS(ctx *ZSSSerializeCtx) *zss.ZSSSchema {
-	return c.schema.ToZSS(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -16,28 +16,23 @@ type lazySchema struct {
 
 var _ ZogSchema = &lazySchema{}
 
-func (l *lazySchema) get() ZogSchema {
-	l.once.Do(func() {
-		l.innerSchema = l.fn()
-	})
-	return l.innerSchema
-}
+func (l *lazySchema) get() ZogSchema { _ = "STUB: not implemented"; return *new(ZogSchema) }
 
-func (l *lazySchema) process(ctx *p.SchemaCtx) {
-	l.get().process(ctx)
+func (l *lazySchema) process(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
+
+func (l *lazySchema) validate(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
+
+func (l *lazySchema) getType() zconst.ZogType {
+	_ = "STUB: not implemented"
+	return *new(zconst.ZogType)
 }
-func (l *lazySchema) validate(ctx *p.SchemaCtx) {
-	l.get().validate(ctx)
-}
-func (l *lazySchema) getType() zconst.ZogType  { return l.get().getType() }
-func (l *lazySchema) setCoercer(c CoercerFunc) { l.get().setCoercer(c) }
+func (l *lazySchema) setCoercer(c CoercerFunc) { _ = "STUB: not implemented"; return }
 func (l *lazySchema) toZSS(ctx *ZSSSerializeCtx) *zss.ZSSSchema {
-	return ctx.refFor(l.get().(ZSSSerializable))
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func lazy(fn func() ZogSchema) *lazySchema {
-	return &lazySchema{fn: fn}
-}
+func lazy(fn func() ZogSchema) *lazySchema { _ = "STUB: not implemented"; return nil }
 
 type RecursiveSchemaUpdater[T ZogSchema] func(self T) T
 type RecursiveSchema[T ZogSchema] func(updaters ...RecursiveSchemaUpdater[T]) ZogSchema
@@ -46,15 +41,6 @@ type RecursiveSchemaBuilder[T ZogSchema] func(self RecursiveSchema[T]) T
 // Experimental API.
 // Do not use unless you know what you are doing.
 func EXPERIMENTAL_RECURSIVE[T ZogSchema](build RecursiveSchemaBuilder[T]) T {
-	var self T
-	var lazyBuilder RecursiveSchema[T] = func(updaters ...RecursiveSchemaUpdater[T]) ZogSchema {
-		return lazy(func() ZogSchema {
-			if len(updaters) > 0 {
-				return updaters[0](self)
-			}
-			return self
-		})
-	}
-	self = build(lazyBuilder)
-	return self
+	_ = "STUB: not implemented"
+	return *new(T)
 }

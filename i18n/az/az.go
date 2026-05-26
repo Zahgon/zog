@@ -80,12 +80,12 @@ var Map zconst.LangMap = map[zconst.ZogType]map[zconst.ZogIssueCode]string{
 		zconst.IssueCodeFallback:                      "siyahı yanlışdır",
 	},
 	zconst.TypeMap: {
-		zconst.IssueCodeRequired:     "tələb olunur",
-		zconst.IssueCodeNotNil:       "boş olmamalıdır",
-		zconst.IssueCodeMin:          "xəritədə ən azı {{min}} giriş olmalıdır",
-		zconst.IssueCodeMax:          "xəritədə maksimum {{max}} giriş olmalıdır",
-		zconst.IssueCodeLen:          "xəritədə {{len}} giriş olmalıdır",
-		zconst.IssueCodeFallback:     "xəritə yanlışdır",
+		zconst.IssueCodeRequired: "tələb olunur",
+		zconst.IssueCodeNotNil:   "boş olmamalıdır",
+		zconst.IssueCodeMin:      "xəritədə ən azı {{min}} giriş olmalıdır",
+		zconst.IssueCodeMax:      "xəritədə maksimum {{max}} giriş olmalıdır",
+		zconst.IssueCodeLen:      "xəritədə {{len}} giriş olmalıdır",
+		zconst.IssueCodeFallback: "xəritə yanlışdır",
 	},
 	zconst.TypeStruct: {
 		zconst.IssueCodeRequired: "tələb olunur",

@@ -10,9 +10,12 @@ const (
 var exMetaRegistry ExMetaRegistry = nil
 
 func RegistryAdd(_ ExMetaRegistry, _ any, _ string, _ any) {
+	_ = "STUB: not implemented"
 	// no op
+	return
 }
 
 func RegistryGet(_ ExMetaRegistry, _ any, _ string) (any, bool) {
-	return nil, false
+	_ = "STUB: not implemented"
+	return *new(any), false
 }

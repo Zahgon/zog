@@ -1,9 +1,6 @@
 package zog
 
 import (
-	"fmt"
-	"reflect"
-
 	"github.com/Oudwins/zog/conf"
 	p "github.com/Oudwins/zog/pkgs/internals"
 	"github.com/Oudwins/zog/zconst"
@@ -29,198 +26,91 @@ type NotSliceSchema interface {
 
 // Returns the type of the schema
 func (v *SliceSchema) getType() zconst.ZogType {
-	return zconst.TypeSlice
+	_ = "STUB: not implemented"
+	return *
+
+	// Sets the coercer for the schema
+	new(zconst.ZogType)
 }
 
-// Sets the coercer for the schema
 func (v *SliceSchema) setCoercer(c conf.CoercerFunc) {
-	v.coercer = c
-}
+	_ = "STUB: not implemented"
 
-// ! USER FACING FUNCTIONS
+	// ! USER FACING FUNCTIONS
+	return
+}
 
 // Creates a slice schema. That is a Zog representation of a slice.
 // It takes a ZogSchema which will be used to validate against all the items in the slice.
 func Slice(schema ZogSchema, opts ...SchemaOption) *SliceSchema {
-	s := &SliceSchema{
-		schema:  schema,
-		coercer: conf.Coercers.Slice, // default coercer
-	}
-	for _, opt := range opts {
-		opt(s)
-	}
-	return s
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// default coercer
 
 // Validates a slice
 func (v *SliceSchema) Validate(data any, options ...ExecOption) ZogIssueList {
-	errs := p.NewErrsList()
-	defer errs.Free()
-
-	ctx := p.NewExecCtx(errs, conf.IssueFormatter)
-	defer ctx.Free()
-	for _, opt := range options {
-		opt(ctx)
-	}
-	path := p.NewPathBuilder()
-	defer path.Free()
-	sctx := ctx.NewSchemaCtx(data, data, path, v.getType())
-	defer sctx.Free()
-	v.validate(sctx)
-	return errs.List
+	_ = "STUB: not implemented"
+	return *new(ZogIssueList)
 }
 
 // Internal function to validate the data
-func (v *SliceSchema) validate(ctx *p.SchemaCtx) {
+func (v *SliceSchema) validate(ctx *p.SchemaCtx) { _ = "STUB: not implemented"; return }
 
-	refVal := reflect.ValueOf(ctx.ValPtr).Elem() // we use this to set the value to the ptr. But we still reference the ptr everywhere. This is correct even if it seems confusing.
-	// 2. cast data to string & handle default/required
-	isZeroVal := p.IsZeroValue(ctx.ValPtr)
+// we use this to set the value to the ptr. But we still reference the ptr everywhere. This is correct even if it seems confusing.
+// 2. cast data to string & handle default/required
 
-	if isZeroVal || refVal.Len() == 0 {
-		if v.defaultFunc != nil {
-			refVal.Set(reflect.ValueOf(v.defaultFunc()))
-		} else if v.required == nil {
-			return
-		} else {
-			// REQUIRED & ZERO VALUE
-			ctx.AddIssue(ctx.IssueFromTest(v.required, ctx.ValPtr))
-			return
-		}
-	}
+// REQUIRED & ZERO VALUE
 
-	// 3.1 tests for slice items
-	subCtx := ctx.NewValidateSchemaCtx(ctx.ValPtr, ctx.Path, v.schema.getType())
-	defer subCtx.Free()
-	for idx := 0; idx < refVal.Len(); idx++ {
-		item := refVal.Index(idx).Addr().Interface()
-		k := fmt.Sprintf("[%d]", idx)
-		subCtx.ValPtr = item
-		subCtx.Path.Push(&k)
-		subCtx.Exit = false
-		v.schema.validate(subCtx)
-		subCtx.Path.Pop()
-	}
+// 3.1 tests for slice items
 
-	for _, processor := range v.processors {
-		ctx.Processor = processor
-		processor.ZProcess(ctx.ValPtr, ctx)
-		if ctx.Exit {
-			// can catch here
-			return
-		}
-	}
-}
+// can catch here
 
 // Only supports parsing from data=slice[any] to a dest =&slice[] (this can be typed. Doesn't have to be any)
 func (v *SliceSchema) Parse(data any, dest any, options ...ExecOption) ZogIssueList {
-	errs := p.NewErrsList()
-	defer errs.Free()
-	ctx := p.NewExecCtx(errs, conf.IssueFormatter)
-	defer ctx.Free()
-	for _, opt := range options {
-		opt(ctx)
-	}
-	path := p.NewPathBuilder()
-	defer path.Free()
-	sctx := ctx.NewSchemaCtx(data, dest, path, v.getType())
-	defer sctx.Free()
-	v.process(sctx)
-
-	return errs.List
+	_ = "STUB: not implemented"
+	return *new(ZogIssueList)
 }
 
 // Internal function to process the data
 func (v *SliceSchema) process(ctx *p.SchemaCtx) {
+	_ = "STUB: not implemented"
 
 	// 2. cast data to string & handle default/required
-	isZeroVal := p.IsParseZeroValue(ctx.Data, ctx)
-	var refVal reflect.Value
-
-	if isZeroVal {
-		if v.defaultFunc != nil {
-			refVal = reflect.ValueOf(v.defaultFunc())
-		} else if v.required == nil {
-			return
-		} else {
-			// REQUIRED & ZERO VALUE
-			ctx.AddIssue(ctx.IssueFromTest(v.required, ctx.Data))
-			return
-		}
-	} else {
-		// make sure val is a slice if not try to make it one
-		v, err := v.coercer(ctx.Data)
-		if err != nil {
-			ctx.AddIssue(ctx.IssueFromCoerce(err))
-			return
-		}
-		refVal = reflect.ValueOf(v)
-	}
-
-	destVal := reflect.ValueOf(ctx.ValPtr).Elem()
-	destVal.Set(reflect.MakeSlice(destVal.Type(), refVal.Len(), refVal.Len()))
-
-	// 3.1 tests for slice items
-	subCtx := ctx.NewSchemaCtx(ctx.Data, ctx.ValPtr, ctx.Path, v.schema.getType())
-	defer subCtx.Free()
-	for idx := 0; idx < refVal.Len(); idx++ {
-		item := refVal.Index(idx).Interface()
-		ptr := destVal.Index(idx).Addr().Interface()
-		k := fmt.Sprintf("[%d]", idx)
-		subCtx.Data = item
-		subCtx.ValPtr = ptr
-		subCtx.Path.Push(&k)
-		v.schema.process(subCtx)
-		subCtx.Path.Pop()
-	}
-
-	for _, processor := range v.processors {
-		ctx.Processor = processor
-		processor.ZProcess(ctx.ValPtr, ctx)
-		if ctx.Exit {
-			return
-		}
-	}
-
+	return
 }
+
+// REQUIRED & ZERO VALUE
+
+// make sure val is a slice if not try to make it one
+
+// 3.1 tests for slice items
 
 // Adds transform function to schema.
 func (v *SliceSchema) Transform(transform Transform[any]) *SliceSchema {
-	v.processors = append(v.processors, &p.TransformProcessor[any]{
-		Transform: p.Transform[any](transform),
-	})
-	return v
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // !MODIFIERS
 
 // marks field as required
 func (v *SliceSchema) Required(options ...TestOption) *SliceSchema {
-	r := p.Required[any]()
-	for _, opt := range options {
-		opt(&r)
-	}
-	v.required = &r
-	return v
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // marks field as optional
-func (v *SliceSchema) Optional() *SliceSchema {
-	v.required = nil
-	return v
-}
+func (v *SliceSchema) Optional() *SliceSchema { _ = "STUB: not implemented"; return nil }
 
 // sets the default value
-func (v *SliceSchema) Default(val any) *SliceSchema {
-	return v.DefaultFunc(func() any {
-		return val
-	})
-}
+func (v *SliceSchema) Default(val any) *SliceSchema { _ = "STUB: not implemented"; return nil }
 
 // sets the default value using a function
 func (v *SliceSchema) DefaultFunc(defaultFunc func() any) *SliceSchema {
-	v.defaultFunc = defaultFunc
-	return v
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NOT IMPLEMENTED YET
@@ -233,134 +123,47 @@ func (v *SliceSchema) DefaultFunc(defaultFunc func() any) *SliceSchema {
 // !TESTS
 
 // custom test function call it -> schema.Test(t z.Test)
-func (v *SliceSchema) Test(t Test[any]) *SliceSchema {
-	x := p.Test[any](t)
-	v.processors = append(v.processors, &x)
-	return v
-}
+func (v *SliceSchema) Test(t Test[any]) *SliceSchema { _ = "STUB: not implemented"; return nil }
 
 // Create a custom test function for the schema. This is similar to Zod's `.refine()` method.
 func (v *SliceSchema) TestFunc(testFunc BoolTFunc[any], opts ...TestOption) *SliceSchema {
-	t := p.NewTestFunc("", p.BoolTFunc[any](testFunc), opts...)
-	v.Test(Test[any](*t))
-	return v
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Minimum number of items
 func (v *SliceSchema) Min(n int, options ...TestOption) *SliceSchema {
-	t, fn := sliceMin(n)
-
-	return v.addTest(&t, fn, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Maximum number of items
 func (v *SliceSchema) Max(n int, options ...TestOption) *SliceSchema {
-	t, fn := sliceMax(n)
-
-	return v.addTest(&t, fn, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Exact number of items
 func (v *SliceSchema) Len(n int, options ...TestOption) *SliceSchema {
-	t, fn := sliceLength(n)
-
-	return v.addTest(&t, fn, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Slice contains a specific value
 func (v *SliceSchema) Contains(value any, options ...TestOption) *SliceSchema {
-	fn := func(val any, ctx Ctx) bool {
-		rv := reflect.ValueOf(val).Elem()
-		if rv.Kind() != reflect.Slice {
-			return false
-		}
-		for idx := 0; idx < rv.Len(); idx++ {
-			v := rv.Index(idx).Interface()
-
-			if reflect.DeepEqual(v, value) {
-				return true
-			}
-		}
-
-		return false
-	}
-	t := &p.Test[any]{
-		IssueCode: zconst.IssueCodeContains,
-		Params: map[string]any{
-			zconst.IssueCodeContains: value,
-		},
-	}
-
-	return v.addTest(t, fn, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func sliceMin(n int) (p.Test[any], p.BoolTFunc[any]) {
-	fn := func(val any, ctx Ctx) bool {
-		rv := reflect.ValueOf(val).Elem()
-		if rv.Kind() != reflect.Slice {
-			return false
-		}
-		return rv.Len() >= n
-	}
+func sliceMin(n int) (p.Test[any], p.BoolTFunc[any]) { _ = "STUB: not implemented"; return nil, nil }
 
-	t := p.Test[any]{
-		IssueCode: zconst.IssueCodeMin,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeMin] = n
-	return t, fn
-}
+func sliceMax(n int) (p.Test[any], p.BoolTFunc[any]) { _ = "STUB: not implemented"; return nil, nil }
 
-func sliceMax(n int) (p.Test[any], p.BoolTFunc[any]) {
-	fn := func(val any, ctx Ctx) bool {
-		rv := reflect.ValueOf(val).Elem()
-		if rv.Kind() != reflect.Slice {
-			return false
-		}
-		return rv.Len() <= n
-	}
+func sliceLength(n int) (p.Test[any], p.BoolTFunc[any]) { _ = "STUB: not implemented"; return nil, nil }
 
-	t := p.Test[any]{
-		IssueCode: zconst.IssueCodeMax,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeMax] = n
-	return t, fn
-}
-func sliceLength(n int) (p.Test[any], p.BoolTFunc[any]) {
-	fn := func(val any, ctx Ctx) bool {
-		rv := reflect.ValueOf(val).Elem()
-		if rv.Kind() != reflect.Slice {
-			return false
-		}
-		return rv.Len() == n
-	}
-	t := p.Test[any]{
-		IssueCode: zconst.IssueCodeLen,
-		Params:    make(map[string]any, 1),
-	}
-	t.Params[zconst.IssueCodeLen] = n
-	return t, fn
-}
-
-func (v *SliceSchema) Not() NotSliceSchema {
-	v.isNot = true
-	return v
-}
+func (v *SliceSchema) Not() NotSliceSchema { _ = "STUB: not implemented"; return *new(NotSliceSchema) }
 
 func (v *SliceSchema) addTest(t *p.Test[any], fn p.BoolTFunc[any], options ...TestOption) *SliceSchema {
-	if v.isNot {
-		p.TestNotFuncFromBool(fn, t)
-		t.IssueCode = zconst.NotIssueCode(t.IssueCode)
-		v.isNot = false
-	} else {
-		p.TestFuncFromBool(fn, t)
-	}
-
-	for _, opt := range options {
-		opt(t)
-	}
-
-	v.processors = append(v.processors, t)
-	return v
+	_ = "STUB: not implemented"
+	return nil
 }

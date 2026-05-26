@@ -1,7 +1,5 @@
 package internals
 
-import "fmt"
-
 const (
 	PanicTypeCast                        = "Zog Panic: Type Cast Error\n Current context: %s\n Expected valPtr type to correspond with type defined in schema. But it does not. Expected type: *%T, got: %T\nFor more information see: https://zog.dev/panics#type-cast-errors"
 	PanicTypeCastCoercer                 = "Zog Panic: Type Cast Error\n Current context: %s\n Expected coercer return value to correspond with type defined in schema. But it does not. Expected type: *%T, got: %T\nFor more information see: https://zog.dev/panics#type-cast-errors"
@@ -9,6 +7,4 @@ const (
 	PanicInvalidArgumentsExpectedPointer = "Zog Panic: Expected destination value to be a pointer but it was not. This is generally caused by forgetting to pass a pointer to your Validate/Parse function. Do schema.Validate(&myStruct), not schema.Validate(myStruct) "
 )
 
-func Panicf(format string, args ...any) {
-	panic(fmt.Sprintf(format, args...))
-}
+func Panicf(format string, args ...any) { _ = "STUB: not implemented"; return }

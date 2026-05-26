@@ -12,10 +12,6 @@ var (
 	uuidRegex = regexp.MustCompile(`^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$`)
 )
 
-func Email(val string) bool {
-	return emailRegex.MatchString(val)
-}
+func Email(val string) bool { _ = "STUB: not implemented"; return false }
 
-func UUIDv4(val string) bool {
-	return uuidRegex.MatchString(val)
-}
+func UUIDv4(val string) bool { _ = "STUB: not implemented"; return false }

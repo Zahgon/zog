@@ -1,8 +1,6 @@
 package internals
 
 import (
-	"fmt"
-
 	zconst "github.com/Oudwins/zog/zconst"
 )
 
@@ -33,83 +31,50 @@ type ZogIssue struct {
 	Err error
 }
 
-func NewZogIssue() *ZogIssue {
-	e := ZogIssuePool.Get().(*ZogIssue)
-	e.Code = ""
-	e.Path = nil
-	e.Value = nil
-	e.Dtype = ""
-	e.Params = nil
-	e.Message = ""
-	e.Err = nil
-	return e
-}
+func NewZogIssue() *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // SetCode sets the issue code for the issue and returns the issue for chaining
-func (i *ZogIssue) SetCode(c zconst.ZogIssueCode) *ZogIssue {
-	i.Code = c
-	return i
-}
+func (i *ZogIssue) SetCode(c zconst.ZogIssueCode) *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // SetPath sets the path for the issue and returns the issue for chaining
-func (i *ZogIssue) SetPath(p []string) *ZogIssue {
-	i.Path = p
-	return i
-}
+func (i *ZogIssue) SetPath(p []string) *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // SetValue sets the data value that caused the issue and returns the issue for chaining
-func (i *ZogIssue) SetValue(v any) *ZogIssue {
-	i.Value = v
-	return i
-}
+func (i *ZogIssue) SetValue(v any) *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // SetDType sets the destination type for the issue and returns the issue for chaining
-func (i *ZogIssue) SetDType(t zconst.ZogType) *ZogIssue {
-	i.Dtype = t
-	return i
-}
+func (i *ZogIssue) SetDType(t zconst.ZogType) *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // SetParams sets the params map for the issue and returns the issue for chaining
-func (i *ZogIssue) SetParams(p map[string]any) *ZogIssue {
-	i.Params = p
-	return i
-}
+func (i *ZogIssue) SetParams(p map[string]any) *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // SetMessage sets the human readable, user-friendly message for the issue and returns the issue for chaining
-func (i *ZogIssue) SetMessage(m string) *ZogIssue {
-	i.Message = m
-	return i
-}
+func (i *ZogIssue) SetMessage(m string) *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // SetError sets the wrapped error for the issue and returns the issue for chaining
-func (i *ZogIssue) SetError(e error) *ZogIssue {
-	i.Err = e
-	return i
-}
+func (i *ZogIssue) SetError(e error) *ZogIssue { _ = "STUB: not implemented"; return nil }
 
 // Unwrap returns the wrapped error or nil if none
 func (i *ZogIssue) Unwrap() error {
-	return i.Err
+	_ = "STUB: not implemented"
+
+	// Error returns the string representation of the ZogIssue (same as String())
+	return nil
 }
 
-// Error returns the string representation of the ZogIssue (same as String())
 func (i *ZogIssue) Error() string {
-	return i.String()
+	_ = "STUB: not implemented"
+
+	// String returns the string representation of the ZogIssue (same as Error())
+	return ""
 }
 
-// String returns the string representation of the ZogIssue (same as Error())
-func (i *ZogIssue) String() string {
-	return fmt.Sprintf("ZogIssue{Code: %v, Params: %v, Type: %v, Value: %v, Message: '%v', Error: %v}", SafeString(i.Code), SafeString(i.Params), SafeString(i.Dtype), SafeString(i.Value), SafeString(i.Message), SafeError(i.Err))
-}
+func (i *ZogIssue) String() string { _ = "STUB: not implemented"; return "" }
 
 // Returns a stringified version of the path based on the flatten path string logic
-func (i *ZogIssue) PathString() string {
-	return FlattenPath(i.Path)
-}
+func (i *ZogIssue) PathString() string { _ = "STUB: not implemented"; return "" }
 
-func FreeIssue(i *ZogIssue) {
-	ZogIssuePool.Put(i)
-}
+func FreeIssue(i *ZogIssue) { _ = "STUB: not implemented"; return }
 
 // ZogIssueList is the unified return type for all schema Parse/Validate operations
 type ZogIssueList = []*ZogIssue
@@ -131,24 +96,14 @@ type ErrsList struct {
 }
 
 // internal only
-func NewErrsList() *ErrsList {
-	l := InternalIssueListPool.Get().(*ErrsList)
-	l.List = nil
-	return l
-}
+func NewErrsList() *ErrsList { _ = "STUB: not implemented"; return nil }
 
-func (e *ErrsList) Add(err *ZogIssue) {
-	if e.List == nil {
-		e.List = make(ZogIssueList, 0, 4) // Slightly larger initial capacity
-	}
-	// Path is already set on the issue by SchemaCtx.Issue() or IssueFrom* methods
-	e.List = append(e.List, err)
-}
+func (e *ErrsList) Add(err *ZogIssue) { _ = "STUB: not implemented"; return }
 
-func (e *ErrsList) IsEmpty() bool {
-	return len(e.List) == 0
-}
+// Slightly larger initial capacity
 
-func (e *ErrsList) Free() {
-	InternalIssueListPool.Put(e)
-}
+// Path is already set on the issue by SchemaCtx.Issue() or IssueFrom* methods
+
+func (e *ErrsList) IsEmpty() bool { _ = "STUB: not implemented"; return false }
+
+func (e *ErrsList) Free() { _ = "STUB: not implemented"; return }

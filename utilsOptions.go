@@ -10,30 +10,18 @@ import (
 type TestOption = p.TestOption
 
 // Message is a function that allows you to set a custom message for the test.
-func Message(msg string) TestOption {
-	return func(test p.TestInterface) {
-		RegistryAdd(exMetaRegistry, test, "message", msg)
-		test.SetIssueFmtFunc(func(e *ZogIssue, p Ctx) {
-			e.SetMessage(msg)
-		})
-	}
-}
+func Message(msg string) TestOption { _ = "STUB: not implemented"; return *new(TestOption) }
 
 // MessageFunc is a function that allows you to set a custom message formatter for the test.
-func MessageFunc(fn p.IssueFmtFunc) TestOption {
-	return func(test p.TestInterface) {
-		test.SetIssueFmtFunc(fn)
-	}
-}
+func MessageFunc(fn p.IssueFmtFunc) TestOption { _ = "STUB: not implemented"; return *new(TestOption) }
 
 // IssueCode is a function that allows you to set a custom issue code for the test. Most useful for TestFuncs:
 /*
 z.String().TestFunc(..., z.IssueCode("just_provide_a_string" or use values in zconst))
 */
 func IssueCode(code zconst.ZogIssueCode) TestOption {
-	return func(test p.TestInterface) {
-		test.SetIssueCode(code)
-	}
+	_ = "STUB: not implemented"
+	return *new(TestOption)
 }
 
 // IssuePath is a function that allows you to set a custom issue path for the test.
@@ -47,27 +35,18 @@ z.Shape {
 }
 )
 */
-func IssuePath(path []string) TestOption {
-	return func(test p.TestInterface) {
-		test.SetIssuePath(path)
-	}
-}
+func IssuePath(path []string) TestOption { _ = "STUB: not implemented"; return *new(TestOption) }
 
 // Params is a function that allows you to set a custom params for the test.
 // You may then access these values when formatting test errors in the IssueFmtFunc
-func Params(params map[string]any) TestOption {
-	return func(test p.TestInterface) {
-		test.SetParams(params)
-	}
-}
+func Params(params map[string]any) TestOption { _ = "STUB: not implemented"; return *new(TestOption) }
 
 // Options that can be passed to a `schema.New()` call
 type SchemaOption = func(s ZogSchema)
 
 func WithCoercer(c conf.CoercerFunc) SchemaOption {
-	return func(s ZogSchema) {
-		s.setCoercer(c)
-	}
+	_ = "STUB: not implemented"
+	return *new(SchemaOption)
 }
 
 // Options that can be passed to a `schema.Parse()` call
@@ -79,19 +58,18 @@ type ParsingOption = ExecOption
 // Deprecated: use WithIssueFormatter instead
 // Deprecated for naming consistency
 func WithErrFormatter(fmter IssueFmtFunc) ExecOption {
-	return WithIssueFormatter(fmter)
+	_ = "STUB: not implemented"
+	return *new(ExecOption)
 }
 
 // Sets the issue formatter for the execution context. This is used to format the issues messages during execution.
 // This follows principle of most specific wins. So default formatter < execution formatter < test specific formatter (i.e MessageFunc)
 func WithIssueFormatter(fmter IssueFmtFunc) ExecOption {
-	return func(p *p.ExecCtx) {
-		p.SetIssueFormatter(fmter)
-	}
+	_ = "STUB: not implemented"
+	return *new(ExecOption)
 }
 
 func WithCtxValue(key string, val any) ExecOption {
-	return func(p *p.ExecCtx) {
-		p.Set(key, val)
-	}
+	_ = "STUB: not implemented"
+	return *new(ExecOption)
 }

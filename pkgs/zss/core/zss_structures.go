@@ -1,18 +1,12 @@
 package zsscore // Zog Schema Specification
 
 import (
-	"strconv"
-
 	"github.com/Oudwins/zog/zconst"
 )
 
-func ZSSRefFromKey(key int) string {
-	return "#/$defs/" + ZSSDefKeyFromKey(key)
-}
+func ZSSRefFromKey(key int) string { _ = "STUB: not implemented"; return "" }
 
-func ZSSDefKeyFromKey(key int) string {
-	return "schema" + strconv.Itoa(key)
-}
+func ZSSDefKeyFromKey(key int) string { _ = "STUB: not implemented"; return "" }
 
 type ZSSDocument struct {
 	URI  ZSSSchemaVersion      `json:"$schema"` // URL to ZSS Json Schema file(e.g., "https://zog.dev/zss/0.0.1/schema.json")

@@ -1,8 +1,6 @@
 package i18n
 
 import (
-	"github.com/Oudwins/zog/conf"
-	"github.com/Oudwins/zog/pkgs/internals"
 	"github.com/Oudwins/zog/zconst"
 )
 
@@ -17,31 +15,16 @@ const (
 // }, "en", i18n.WithLangKey("langKey"))
 // schema.Parse(data, &dest, z.WithCtxValue("langKey", "es"))
 func SetLanguagesErrsMap(m map[string]zconst.LangMap, defaultLang string, opts ...setLanguageOption) {
-	langKey := LangKey
-
-	for _, op := range opts {
-		op(&langKey)
-	}
-
-	conf.IssueFormatter = func(e *internals.ZogIssue, ctx internals.Ctx) {
-		lang := ctx.Get(langKey)
-		if lang != nil {
-			langM, ok := m[lang.(string)]
-			if ok {
-				conf.NewDefaultFormatter(langM)(e, ctx)
-				return
-			}
-		}
-		// use default lang if failed to get correct language map
-		conf.NewDefaultFormatter(m[defaultLang])(e, ctx)
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// use default lang if failed to get correct language map
 
 // Override the default lang key used to get the language from the ParseContext
 func WithLangKey(key string) setLanguageOption {
-	return func(lk *string) {
-		*lk = key
-	}
+	_ = "STUB: not implemented"
+	return *new(setLanguageOption)
 }
 
 // Please use the helper function this type may very well change in the future but the helper function's API will stay the same

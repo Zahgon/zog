@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
-	"strings"
 
 	"github.com/Oudwins/zog/parsers/zjson"
 	p "github.com/Oudwins/zog/pkgs/internals"
@@ -72,63 +71,37 @@ type urlDataProvider struct {
 
 var _ p.DataProvider = urlDataProvider{}
 
-func (u urlDataProvider) Get(key string) any {
-	if !u.Data.Has(key) {
-		return nil
-	}
+func (u urlDataProvider) Get(key string) any { _ = "STUB: not implemented"; return *new(any) }
 
-	// if query param ends with [] its always a slice
-	if len(key) > 2 && key[len(key)-2:] == "[]" {
-		return u.Data[key]
-	}
-
-	if len(u.Data[key]) > 1 {
-		return u.Data[key]
-	} else {
-		return u.Data.Get(key)
-	}
-}
+// if query param ends with [] its always a slice
 
 func (u urlDataProvider) GetByField(field reflect.StructField, fallback string) (any, string) {
-	key := p.GetKeyFromField(field, fallback, u.tag)
-	return u.Get(key), key
+	_ = "STUB: not implemented"
+	return *new(any), ""
 }
 
 func (u urlDataProvider) GetNestedProvider(key string) p.DataProvider {
-	return u
-}
-func (u urlDataProvider) GetUnderlying() any {
-	return u.Data
+	_ = "STUB: not implemented"
+	return *new(p.DataProvider)
 }
 
-// Parses JSON, Form & Query data from request based on Content-Type header
-// Usage:
-// schema.Parse(zhttp.Request(r), &dest)
-// WARNING: FOR JSON PARSING DOES NOT SUPPORT JSON ARRAYS OR PRIMITIVES
-func Request(r *http.Request) p.DpFactory {
-	switch r.Method {
-	case "GET":
-		return Config.Parsers.Query(r)
-	case "HEAD":
-		return Config.Parsers.Query(r)
-	default:
-		// Content-Type follows this format: Content-Type: <media-type> [; parameter=value]
-		typ, _, _ := strings.Cut(r.Header.Get("Content-Type"), ";")
-		switch typ {
-		case "application/json":
-			return Config.Parsers.JSON(r)
-		case "application/x-www-form-urlencoded":
-			return Config.Parsers.Form(r)
-		case "multipart/form-data":
-			return Config.Parsers.MultipartForm(r)
-		default:
-			return Config.Parsers.Query(r)
-		}
-	}
+func (u urlDataProvider) GetUnderlying() any {
+	_ = "STUB: not implemented"
+
+	// Parses JSON, Form & Query data from request based on Content-Type header
+	// Usage:
+	// schema.Parse(zhttp.Request(r), &dest)
+	// WARNING: FOR JSON PARSING DOES NOT SUPPORT JSON ARRAYS OR PRIMITIVES
+	return *new(any)
 }
+
+func Request(r *http.Request) p.DpFactory { _ = "STUB: not implemented"; return *new(p.DpFactory) }
+
+// Content-Type follows this format: Content-Type: <media-type> [; parameter=value]
 
 func form(data url.Values, tag *string) p.DataProvider {
-	return urlDataProvider{Data: data, tag: tag}
+	_ = "STUB: not implemented"
+	return *new(p.DataProvider)
 }
 
 // func params(data url.Values) p.DataProvider {
